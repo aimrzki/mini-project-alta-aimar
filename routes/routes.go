@@ -19,6 +19,8 @@ func SetupRoutes(e *echo.Echo, db *gorm.DB) {
 	e.POST("/hotel/create", controllers.CreateHotel(db, secretKey))
 	e.POST("/createpromo", controllers.CreatePromo(db, secretKey))
 	e.PUT("/admin/hotel/:id", controllers.EditHotel(db, secretKey))
+	e.GET("/admin/user", controllers.GetAllUsersByAdmin(db, secretKey))
+	e.GET("/admin/ticket", controllers.GetAllTicketsByAdmin(db, secretKey))
 }
 
 func getSecretKeyFromEnv() string {
