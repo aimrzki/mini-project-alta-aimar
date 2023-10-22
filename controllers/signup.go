@@ -19,7 +19,6 @@ func Signup(db *gorm.DB, secretKey []byte) echo.HandlerFunc {
 			return c.JSON(http.StatusBadRequest, errorResponse)
 		}
 
-		// Mengecek apakah username sudah ada dalam database
 		var existingUser model.User
 		result := db.Where("username = ?", user.Username).First(&existingUser)
 		if result.Error == nil {
@@ -30,7 +29,6 @@ func Signup(db *gorm.DB, secretKey []byte) echo.HandlerFunc {
 			return c.JSON(http.StatusInternalServerError, errorResponse)
 		}
 
-		// Mengecek apakah email sudah ada dalam database
 		result = db.Where("email = ?", user.Email).First(&existingUser)
 		if result.Error == nil {
 			errorResponse := helper.ErrorResponse{Code: http.StatusConflict, Message: "Email already exists"}
@@ -40,7 +38,6 @@ func Signup(db *gorm.DB, secretKey []byte) echo.HandlerFunc {
 			return c.JSON(http.StatusInternalServerError, errorResponse)
 		}
 
-		// Mengecek apakah phone number sudah ada dalam database
 		result = db.Where("phone_number = ?", user.PhoneNumber).First(&existingUser)
 		if result.Error == nil {
 			errorResponse := helper.ErrorResponse{Code: http.StatusConflict, Message: "Phone number already exists"}
@@ -50,33 +47,37 @@ func Signup(db *gorm.DB, secretKey []byte) echo.HandlerFunc {
 			return c.JSON(http.StatusInternalServerError, errorResponse)
 		}
 
-		// Meng-hash password dengan bcrypt
 		hashedPassword, err := bcrypt.GenerateFromPassword([]byte(user.Password), bcrypt.DefaultCost)
 		if err != nil {
 			errorResponse := helper.ErrorResponse{Code: http.StatusInternalServerError, Message: "Failed to hash password"}
 			return c.JSON(http.StatusInternalServerError, errorResponse)
 		}
 
-		// Menyimpan data pengguna ke database
+		uniqueToken := helper.GenerateUniqueToken()
+		user.VerificationToken = uniqueToken
+
 		user.Password = string(hashedPassword)
 		db.Create(&user)
-
-		// Hapus password dari struct
 		user.Password = ""
 
-		// Generate JWT token
 		tokenString, err := middleware.GenerateToken(user.Username, secretKey)
 		if err != nil {
 			errorResponse := helper.ErrorResponse{Code: http.StatusInternalServerError, Message: "Failed to generate token"}
 			return c.JSON(http.StatusInternalServerError, errorResponse)
 		}
 
-		if err := helper.SendWelcomeEmail(user.Email, user.Username); err != nil {
+		if err := helper.SendWelcomeEmail(user.Email, user.Name, uniqueToken); err != nil {
 			errorResponse := helper.ErrorResponse{Code: http.StatusInternalServerError, Message: "Failed to send welcome email"}
 			return c.JSON(http.StatusInternalServerError, errorResponse)
 		}
 
-		// Menyertakan ID pengguna dalam respons
-		return c.JSON(http.StatusOK, map[string]interface{}{"message": "User created successfully", "token": tokenString, "id": user.ID})
+		response := map[string]interface{}{
+			"code":    http.StatusOK,
+			"message": "User created successfully, Please check your email to verify your account",
+			"token":   tokenString,
+			"id":      user.ID,
+		}
+
+		return c.JSON(http.StatusOK, response)
 	}
 }

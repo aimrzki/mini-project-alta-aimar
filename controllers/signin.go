@@ -44,6 +44,11 @@ func Signin(db *gorm.DB, secretKey []byte) echo.HandlerFunc {
 			return c.JSON(http.StatusForbidden, errorResponse)
 		}
 
+		if !existingUser.IsVerified {
+			errorResponse := helper.ErrorResponse{Code: http.StatusUnauthorized, Message: "Account not verified. Please verify your email before logging in."}
+			return c.JSON(http.StatusUnauthorized, errorResponse)
+		}
+
 		// Generate JWT token
 		tokenString, err := middleware.GenerateToken(existingUser.Username, secretKey)
 		if err != nil {
@@ -52,12 +57,12 @@ func Signin(db *gorm.DB, secretKey []byte) echo.HandlerFunc {
 		}
 
 		// Mengirim email notifikasi
-		if err := helper.SendLoginNotification(existingUser.Email, existingUser.Username); err != nil {
+		if err := helper.SendLoginNotification(existingUser.Email, existingUser.Name); err != nil {
 			errorResponse := helper.ErrorResponse{Code: http.StatusInternalServerError, Message: "Failed to send notification email"}
 			return c.JSON(http.StatusInternalServerError, errorResponse)
 		}
 
 		// Menyertakan ID pengguna dalam respons
-		return c.JSON(http.StatusOK, map[string]interface{}{"message": "User login successful", "token": tokenString, "id": existingUser.ID})
+		return c.JSON(http.StatusOK, map[string]interface{}{"code": http.StatusOK, "error": false, "message": "User login successful", "token": tokenString, "id": existingUser.ID})
 	}
 }
