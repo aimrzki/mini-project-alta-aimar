@@ -13,6 +13,7 @@ func SetupRoutes(e *echo.Echo, db *gorm.DB) {
 	secretKey := []byte(getSecretKeyFromEnv())
 	// Menggunakan routes yang telah dipisahkan
 	e.POST("/signup", controllers.Signup(db, secretKey))
+	e.GET("/verify", controllers.VerifyEmail(db))
 	e.POST("/signin", controllers.Signin(db, secretKey))
 	e.POST("/admin/signin", controllers.AdminSignin(db, secretKey))
 	e.POST("/hotel/create", controllers.CreateHotel(db, secretKey))

@@ -44,6 +44,11 @@ func AdminSignin(db *gorm.DB, secretKey []byte) echo.HandlerFunc {
 			return c.JSON(http.StatusForbidden, errorResponse)
 		}
 
+		if !existingUser.IsVerified {
+			errorResponse := helper.ErrorResponse{Code: http.StatusUnauthorized, Message: "Account not verified. Please verify your email before logging in."}
+			return c.JSON(http.StatusUnauthorized, errorResponse)
+		}
+
 		// Generate JWT token
 		tokenString, err := middleware.GenerateToken(existingUser.Username, secretKey)
 		if err != nil {
@@ -58,6 +63,6 @@ func AdminSignin(db *gorm.DB, secretKey []byte) echo.HandlerFunc {
 		}
 
 		// Menyertakan ID pengguna dalam respons
-		return c.JSON(http.StatusOK, map[string]interface{}{"message": "Admin login successful", "token": tokenString, "id": existingUser.ID})
+		return c.JSON(http.StatusOK, map[string]interface{}{"code": http.StatusOK, "error": false, "message": "Admin login successful", "token": tokenString, "id": existingUser.ID})
 	}
 }
