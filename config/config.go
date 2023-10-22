@@ -40,6 +40,9 @@ func InitializeDatabase() (*gorm.DB, error) {
 	}
 
 	db.AutoMigrate(&model.User{})
+	db.AutoMigrate(&model.Hotel{})
+	db.AutoMigrate(&model.Ticket{})
+	db.AutoMigrate(&model.Promo{})
 
 	return db, nil
 }

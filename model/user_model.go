@@ -3,10 +3,10 @@ package model
 type User struct {
 	ID                uint    `gorm:"primaryKey" json:"id"`
 	Name              string  `json:"name"`
-	Username          string  `gorm:"uniqueIndex" json:"username"`
-	Email             string  `gorm:"uniqueIndex" json:"email"`
+	Username          string  `gorm:"uniqueIndex;size:255" json:"username"`
+	Email             string  `gorm:"uniqueIndex;size:255" json:"email"`
 	Password          string  `json:"password"`
-	PhoneNumber       string  `gorm:"uniqueIndex" json:"phone_number"`
+	PhoneNumber       string  `gorm:"uniqueIndex;size:255" json:"phone_number"`
 	Points            int     `json:"points"`
 	IsAdmin           bool    `gorm:"default:false" json:"isAdmin"`
 	IsVerified        bool    `gorm:"default:false" json:"is_verified"`
