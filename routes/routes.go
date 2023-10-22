@@ -33,6 +33,10 @@ func SetupRoutes(e *echo.Echo, db *gorm.DB) {
 	e.GET("/user/points", controllers.GetUserPoints(db, secretKey))
 	e.PUT("/user/change-password/:id", controllers.ChangePassword(db, secretKey))
 	e.PUT("/user/:id", controllers.EditUser(db, secretKey))
+	hotelUsecase := controllers.NewHotelUsecase()
+	e.POST("/chatbot/recommend-hotel", func(c echo.Context) error {
+		return controllers.RecommendHotel(c, hotelUsecase)
+	})
 }
 
 func getSecretKeyFromEnv() string {
