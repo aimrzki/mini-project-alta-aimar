@@ -4,13 +4,7 @@
     <option name="autoReloadType" value="ALL" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f3fcaa9f-d181-4f34-b8aa-01dc78a1d7fc" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/controllers/createHotel.go" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/createHotel.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/controllers/editHotelDataByAdmin.go" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/editHotelDataByAdmin.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/helper/uploadImageGCSB.go" beforeDir="false" afterPath="$PROJECT_DIR$/helper/uploadImageGCSB.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routes/routes.go" beforeDir="false" afterPath="$PROJECT_DIR$/routes/routes.go" afterDir="false" />
-    </list>
+    <list default="true" id="f3fcaa9f-d181-4f34-b8aa-01dc78a1d7fc" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -38,7 +32,7 @@
     "RunOnceActivity.go.modules.automatic.dependencies.download": "true",
     "RunOnceActivity.go.modules.go.list.on.any.changes.was.set": "true",
     "WebServerToolWindowFactoryState": "false",
-    "git-widget-placeholder": "Fitur-utama-booking-hotel-oleh-user",
+    "git-widget-placeholder": "Fitur-untuk-cek-point-rewards-yang-dimiliki",
     "go.import.settings.migrated": "true",
     "go.sdk.automatically.set": "true",
     "last_opened_file_path": "/Users/aimrzki",
