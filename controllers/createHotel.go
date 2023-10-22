@@ -47,7 +47,6 @@ func CreateHotel(db *gorm.DB, secretKey []byte) echo.HandlerFunc {
 			return c.JSON(http.StatusForbidden, errorResponse)
 		}
 
-		// Menerima data teks dari form-data
 		title := c.FormValue("title")
 		location := c.FormValue("location")
 		description := c.FormValue("description")
@@ -56,7 +55,6 @@ func CreateHotel(db *gorm.DB, secretKey []byte) echo.HandlerFunc {
 		roomType := c.FormValue("room_type")
 		guestCount := c.FormValue("guest_count")
 
-		// Konversi data teks ke tipe yang sesuai (misalnya, Price dan AvailableRooms ke int)
 		priceInt, err := strconv.Atoi(price)
 		if err != nil {
 			errorResponse := helper.ErrorResponse{Code: http.StatusBadRequest, Message: "Invalid price value"}
@@ -74,10 +72,19 @@ func CreateHotel(db *gorm.DB, secretKey []byte) echo.HandlerFunc {
 			return c.JSON(http.StatusBadRequest, errorResponse)
 		}
 
-		// Membaca gambar dari form-data
 		imageFile, err := c.FormFile("image")
 		if err != nil {
 			errorResponse := helper.ErrorResponse{Code: http.StatusBadRequest, Message: "Failed to read image data"}
+			return c.JSON(http.StatusBadRequest, errorResponse)
+		}
+
+		if !helper.IsImageFile(imageFile) {
+			errorResponse := helper.ErrorResponse{Code: http.StatusBadRequest, Message: "Invalid file type. Only image files are allowed."}
+			return c.JSON(http.StatusBadRequest, errorResponse)
+		}
+
+		if helper.IsFileSizeExceeds(imageFile, 5*1024*1024) {
+			errorResponse := helper.ErrorResponse{Code: http.StatusBadRequest, Message: "File size exceeds the allowed limit (5MB)."}
 			return c.JSON(http.StatusBadRequest, errorResponse)
 		}
 
@@ -94,7 +101,6 @@ func CreateHotel(db *gorm.DB, secretKey []byte) echo.HandlerFunc {
 			return c.JSON(http.StatusBadRequest, errorResponse)
 		}
 
-		// Membuat hotel baru
 		createdHotel := model.Hotel{
 			Title:          title,
 			Location:       location,
@@ -126,6 +132,7 @@ func CreateHotel(db *gorm.DB, secretKey []byte) echo.HandlerFunc {
 		}
 
 		return c.JSON(http.StatusOK, map[string]interface{}{
+			"code":      http.StatusOK,
 			"error":     false,
 			"message":   "Hotel created successfully",
 			"hotelData": createdHotel,

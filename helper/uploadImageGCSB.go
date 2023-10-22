@@ -7,6 +7,8 @@ import (
 	"fmt"
 	"google.golang.org/api/option"
 	"io"
+	"mime/multipart"
+	"strings"
 )
 
 func UploadImageToGCS(imageData []byte, imageName string) (string, error) {
@@ -35,4 +37,12 @@ func UploadImageToGCS(imageData []byte, imageName string) (string, error) {
 
 	imageURL := fmt.Sprintf("https://storage.googleapis.com/%s/%s", bucketName, imageName)
 	return imageURL, nil
+}
+
+func IsImageFile(file *multipart.FileHeader) bool {
+	return strings.HasPrefix(file.Header.Get("Content-Type"), "image/")
+}
+
+func IsFileSizeExceeds(file *multipart.FileHeader, maxSize int64) bool {
+	return file.Size > maxSize
 }
