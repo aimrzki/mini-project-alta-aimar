@@ -24,6 +24,7 @@ func SetupRoutes(e *echo.Echo, db *gorm.DB) {
 	e.GET("/admin/ticket/invoice", controllers.GetTicketByInvoiceNumber(db, secretKey))
 	e.DELETE("/admin/hotel/:id", controllers.DeleteHotel(db, secretKey))
 	e.DELETE("/admin/user/:id", controllers.DeleteUserByAdmin(db, secretKey))
+	e.GET("/user/:user_id", controllers.GetUserDataByID(db, secretKey))
 }
 
 func getSecretKeyFromEnv() string {
