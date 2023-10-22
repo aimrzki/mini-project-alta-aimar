@@ -96,6 +96,7 @@ func EditHotel(db *gorm.DB, secretKey []byte) echo.HandlerFunc {
 
 		// Mengembalikan respons sukses jika berhasil
 		return c.JSON(http.StatusOK, map[string]interface{}{
+			"code":      http.StatusOK,
 			"error":     false,
 			"message":   "Hotel updated successfully",
 			"hotelData": existingHotel, // Mengirim data hotel yang telah diperbarui
