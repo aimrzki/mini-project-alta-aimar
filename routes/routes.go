@@ -3,15 +3,25 @@ package routes
 import (
 	"github.com/labstack/echo/v4"
 	"gorm.io/gorm"
+	"io/ioutil"
 	"log"
 	"myproject/controllers"
+	"net/http"
 	"os"
 )
+
+func ServeHTML(c echo.Context) error {
+	htmlData, err := ioutil.ReadFile("index.html")
+	if err != nil {
+		return err
+	}
+	return c.HTML(http.StatusOK, string(htmlData))
+}
 
 func SetupRoutes(e *echo.Echo, db *gorm.DB) {
 	e.Use(Logger())
 	secretKey := []byte(getSecretKeyFromEnv())
-	// Menggunakan routes yang telah dipisahkan
+	e.GET("/", ServeHTML)
 	e.POST("/signup", controllers.Signup(db, secretKey))
 	e.GET("/verify", controllers.VerifyEmail(db))
 	e.POST("/signin", controllers.Signin(db, secretKey))
