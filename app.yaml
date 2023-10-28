@@ -1,5 +1,7 @@
 runtime: go
+service: hotelku-api
 env: flex
+
 
 runtime_config:
   operating_system: "ubuntu22"
