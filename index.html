@@ -92,6 +92,7 @@
                 <li class="nav-item"><a class="nav-link" href="#deleteHotelByAdmin">Delete Hotel Data By Admin</a></li>
                 <li class="nav-item"><a class="nav-link" href="#deleteUserByAdmin">Delete User Data By Admin</a></li>
                 <li class="nav-item"><a class="nav-link" href="#chatbot">Chatbot Access for User Platform</a></li>
+                <li class="nav-item"><a class="nav-link" href="#"></a></li>
             </ul>
         </nav>
         <div id="content" class="col">
@@ -110,12 +111,12 @@
                     <p><code>POST</code></p>
                     <p><strong>Request Body</strong></p>
                     <pre>
-    {
-    "username" : "string",
-    "password" : "string",
-    "email" : "string",
-    "phone_number" : "string"
-}
+  {
+        "username" : "string",
+        "password" : "string",
+        "email" : "string",
+        "phone_number" : "string"
+  }
                         </pre>
                     <p><strong>Response</strong></p>
                     <pre>
@@ -145,9 +146,9 @@
                     <p><strong>Response</strong></p>
                     <pre>
     {
-       "id": 13,
-    "message": "Login successful",
-    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJhZml0eSIsImV4cCI6MTY5NzQ2Mzk4MywiaWF0IjoxNjk3Mzc3NTgzfQ.Q3RIb0NVJ72P5wye5iPVaEsf7-BDtT-lavTdkJq60vw"
+        "id": 13,
+        "message": "Login successful",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJhZml0eSIsImV4cCI6MTY5NzQ2Mzk4MywiaWF0IjoxNjk3Mzc3NTgzfQ.Q3RIb0NVJ72P5wye5iPVaEsf7-BDtT-lavTdkJq60vw"
     }
                         </pre>
                 </div>
@@ -172,11 +173,9 @@
         "id": int,
         "username": "string",
         "email": "string",
-        "password": "$2a$10$sDNeHDHjVPV6TR56aF/oOOyRWq5.nNEwMAqlC2aFJWrN/119d6C4K",
         "phone_number": "string",
         "points": int,
-        "is_admin": bool,
-    }
+        "is_verified": bool,
     }
                         </pre>
                 </div>
@@ -305,7 +304,7 @@
                     <p><strong>Request Body</strong></p>
                     <pre>
     {
-    "paid_status" : bool,
+        "paid_status" : bool,
     }
                             </pre>
                     <p><strong>Note</strong></p>
@@ -411,7 +410,6 @@
         "photo_hotel": "string - url cloud storage",
         "created_at": "time",
         "updated_at": "time"
-    }
     }
                             </pre>
                 </div>
@@ -593,10 +591,10 @@
                     <p><code>Include authorization token in headers.</code></p>
                     <p><strong>Response</strong></p>
                     <pre>
-      {
-    "error": false,
-    "message": "User's points retrieved successfully",
-    "points": int
+    }
+        "error": false,
+        "message": "User's points retrieved successfully",
+        "points": int
     }
                             </pre>
                 </div>
@@ -657,11 +655,11 @@
                     <p><strong>Request Body</strong></p>
                     <pre>
     {
-    "username" : "string",
-    "password" : "string",
-    "email" : "string",
-    "phone_number" : "string"
-}
+        "username" : "string",
+        "password" : "string",
+        "email" : "string",
+        "phone_number" : "string"
+    }
                             </pre>
                     <p><strong>Note</strong></p>
                     <p><code>Include authorization token in headers.</code></p>
@@ -694,11 +692,11 @@
                     <p><code>Include authorization token in headers.</code></p>
                     <p><strong>Response</strong></p>
                     <pre>
-      {
-        "error":   false,
-		"message": "Hotel deleted successfully"
-      }
-                            </pre>
+            {
+                  "error":   false,
+                  "message": "User deleted successfully"
+            }
+                     </pre>
                 </div>
             </div>
             <div id="deleteHotelByAdmin" class="card mb-4 anchor">
@@ -715,7 +713,7 @@
       {
             "error":   false,
             "message": "User deleted successfully"
-    }
+      }
                             </pre>
                 </div>
             </div>
@@ -728,8 +726,8 @@
                     <p><code>POST</code></p>
                     <p><strong>Request Body</strong></p>
                     <pre>
-   {
-    "message": "Saya butuh rekomendasi hotel di jakarta"
+    {
+        "message": "Saya butuh rekomendasi hotel di jakarta"
     }
                         </pre>
                     <p><strong>Response</strong></p>
