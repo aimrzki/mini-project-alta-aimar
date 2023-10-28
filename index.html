@@ -78,6 +78,7 @@
                 <li class="nav-item"><a class="nav-link" href="#getUserDataById">Get User Data By ID</a></li>
                 <li class="nav-item"><a class="nav-link" href="#getAllTicketByAdmin">Get All Ticket By Admin</a></li>
                 <li class="nav-item"><a class="nav-link" href="#addedHotelByAdmin">Added Hotel By Admin</a></li>
+                <li class="nav-item"><a class="nav-link" href="#paidUpdate">Paid Status Update By Admin</a></li>
                 <li class="nav-item"><a class="nav-link" href="#getAllHotel">Get All Hotel Data</a></li>
                 <li class="nav-item"><a class="nav-link" href="#getHotelById">Get Hotel Data By ID</a></li>
                 <li class="nav-item"><a class="nav-link" href="#createPromoVoucherByAdmin">Create Promo Voucher By Admin</a></li>
@@ -290,6 +291,50 @@
         "error": false,
         "message": "Hotel created successfully"
     }
+                            </pre>
+                </div>
+            </div>
+
+            <div id="paidUpdate" class="card mb-4 anchor">
+                <div class="card-body">
+                    <h2>Paid Status Update by Admin</h2>
+                    <p><strong>URL</strong></p>
+                    <p><code>/admin/ticket/:invoiceId</code></p>
+                    <p><strong>Method</strong></p>
+                    <p><code>PUT - Admin dapat mengubah status pembayaran</code></p>
+                    <p><strong>Request Body</strong></p>
+                    <pre>
+    {
+    "paid_status" : bool,
+    }
+                            </pre>
+                    <p><strong>Note</strong></p>
+                    <p><code>Include authorization token in headers.</code></p>
+                    <p><strong>Response</strong></p>
+                    <pre>
+    {
+    "code": 200,
+    "error": false,
+    "message": "Paid status updated successfully",
+    "ticket": {
+        "id": int,
+        "hotel_id": int,
+        "user_id": int,
+        "night": int,
+        "kode_voucher": "string",
+        "used_points": int,
+        "use_all_points": bool,
+        "points_earned": int,
+        "total_cost": int,
+        "invoice_number": "string,
+        "quantity": int,
+        "checkin_booking": year-month-date,
+        "checkout_booking": year-month-date,
+        "created_at": time,
+        "UpdatedAt": time,
+        "paid_status": bool
+    }
+}
                             </pre>
                 </div>
             </div>

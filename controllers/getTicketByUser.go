@@ -78,7 +78,8 @@ func GetTicketsByUser(db *gorm.DB, secretKey []byte) echo.HandlerFunc {
 				"total_cost":     ticket.TotalCost,
 				"invoice_number": ticket.InvoiceNumber,
 				"kode_voucher":   kodeVoucher,
-				"quantity":       ticket.Quantity, // Menambahkan quantity ke detail tiket
+				"quantity":       ticket.Quantity,   // Menambahkan quantity ke detail tiket
+				"paid":           ticket.PaidStatus, // Menambahkan status pembayaran ke detail tiket
 			}
 
 			// Menambahkan objek tiket ke daftar ticketDetails

@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"fmt"
 	"github.com/labstack/echo/v4"
 	"gorm.io/gorm"
 	"myproject/helper"
@@ -10,11 +11,8 @@ import (
 	"strings"
 )
 
-func GetTicketByInvoiceNumber(db *gorm.DB, secretKey []byte) echo.HandlerFunc {
+func UpdatePaidStatus(db *gorm.DB, secretKey []byte) echo.HandlerFunc {
 	return func(c echo.Context) error {
-		// Dapatkan invoice_number dari URL parameter
-		invoiceNumber := c.Param("invoiceNumber")
-
 		tokenString := c.Request().Header.Get("Authorization")
 		if tokenString == "" {
 			errorResponse := helper.ErrorResponse{Code: http.StatusUnauthorized, Message: "Authorization token is missing"}
@@ -35,20 +33,22 @@ func GetTicketByInvoiceNumber(db *gorm.DB, secretKey []byte) echo.HandlerFunc {
 			return c.JSON(http.StatusUnauthorized, errorResponse)
 		}
 
-		var user model.User
-		result := db.Where("username = ?", username).First(&user)
+		var adminUser model.User
+		result := db.Where("username = ?", username).First(&adminUser)
 		if result.Error != nil {
-			errorResponse := helper.ErrorResponse{Code: http.StatusInternalServerError, Message: "Failed to fetch user data"}
-			return c.JSON(http.StatusInternalServerError, errorResponse)
+			errorResponse := helper.ErrorResponse{Code: http.StatusNotFound, Message: "Admin user not found"}
+			return c.JSON(http.StatusNotFound, errorResponse)
 		}
 
-		if !user.IsAdmin {
-			errorResponse := helper.ErrorResponse{Code: http.StatusForbidden, Message: "Access forbidden for non-admin users"}
+		if !adminUser.IsAdmin {
+			errorResponse := helper.ErrorResponse{Code: http.StatusForbidden, Message: "Access denied for non-admin users"}
 			return c.JSON(http.StatusForbidden, errorResponse)
 		}
 
+		invoiceNumber := c.Param("invoiceId")
+
 		var requestBody struct {
-			InvoiceNumber string `json:"invoice_number"`
+			PaidStatus bool `json:"paid_status"`
 		}
 
 		if err := c.Bind(&requestBody); err != nil {
@@ -63,32 +63,32 @@ func GetTicketByInvoiceNumber(db *gorm.DB, secretKey []byte) echo.HandlerFunc {
 			return c.JSON(http.StatusNotFound, errorResponse)
 		}
 
-		var hotel model.Hotel
-		hotelResult := db.First(&hotel, ticket.HotelID)
-		if hotelResult.Error != nil {
-			errorResponse := helper.ErrorResponse{Code: http.StatusInternalServerError, Message: "Failed to fetch event data"}
-			return c.JSON(http.StatusInternalServerError, errorResponse)
+		// Cek apakah tiket dimiliki oleh seorang pengguna
+		var user model.User
+		result = db.First(&user, ticket.UserID)
+		if result.Error != nil {
+			errorResponse := helper.ErrorResponse{Code: http.StatusNotFound, Message: "User not found"}
+			return c.JSON(http.StatusNotFound, errorResponse)
 		}
 
-		ticketDetail := map[string]interface{}{
-			"ticket_id":      ticket.ID,
-			"user_id":        ticket.UserID,
-			"hotel_id":       ticket.HotelID,
-			"hotel_title":    hotel.Title,
-			"room_type":      hotel.RoomType,
-			"guest_count":    hotel.GuestCount,
-			"night":          ticket.Night,
-			"total_cost":     ticket.TotalCost,
-			"invoice_number": ticket.InvoiceNumber,
-			"kode_voucher":   ticket.KodeVoucher,
-			"Paid Status":    ticket.PaidStatus,
+		// Update paid_status
+		ticket.PaidStatus = requestBody.PaidStatus
+		db.Save(&ticket)
+
+		fmt.Printf("PointsEarned: %d, PaidStatus: %v\n", ticket.PointsEarned, requestBody.PaidStatus)
+
+		if ticket.PointsEarned > 0 && requestBody.PaidStatus {
+			// Tambahkan poin ke pengguna yang memiliki tiket
+			user.Points += ticket.PointsEarned
+			db.Save(&user)
+			fmt.Printf("Points added to user %d: %d\n", user.ID, ticket.PointsEarned)
 		}
 
 		return c.JSON(http.StatusOK, map[string]interface{}{
-			"code":        http.StatusOK,
-			"error":       false,
-			"message":     "Ticket details retrieved successfully",
-			"ticket_data": ticketDetail,
+			"code":    http.StatusOK,
+			"error":   false,
+			"message": "Paid status updated successfully",
+			"ticket":  ticket,
 		})
 	}
 }

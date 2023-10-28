@@ -10,6 +10,7 @@ type Ticket struct {
 	KodeVoucher     string     `json:"kode_voucher"`
 	UsedPoints      int        `json:"used_points"`
 	UseAllPoints    bool       `json:"use_all_points"`
+	PointsEarned    int        `json:"points_earned"`
 	TotalCost       int        `json:"total_cost"`
 	InvoiceNumber   string     `json:"invoice_number"`
 	Quantity        int        `json:"quantity"`
@@ -17,4 +18,5 @@ type Ticket struct {
 	CheckoutBooking *time.Time `json:"checkout_booking"` // Tanggal check-out
 	CreatedAt       *time.Time `json:"created_at"`
 	UpdatedAt       time.Time
+	PaidStatus      bool `gorm:"default:false" json:"paid_status"` // Tambahkan kolom ini dengan default false
 }

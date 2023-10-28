@@ -48,7 +48,7 @@ func BuyTicket(db *gorm.DB, secretKey []byte) echo.HandlerFunc {
 			UseAllPoints   bool   `json:"use_all_points"`
 			UsedPoints     int    `json:"used_points"`
 			Quantity       int    `json:"quantity"`
-			CheckinBooking string `json:"checkin_booking"` // Tambahkan field untuk tanggal check-in
+			CheckinBooking string `json:"checkin_booking"`
 		}
 
 		if err := c.Bind(&ticketPurchase); err != nil {
@@ -63,7 +63,6 @@ func BuyTicket(db *gorm.DB, secretKey []byte) echo.HandlerFunc {
 			return c.JSON(http.StatusNotFound, errorResponse)
 		}
 
-		// Hitung tanggal check-out berdasarkan tanggal check-in dan jumlah malam
 		checkinBookingTime, err := time.Parse("2006-01-02", ticketPurchase.CheckinBooking)
 		if err != nil {
 			errorResponse := helper.ErrorResponse{Code: http.StatusBadRequest, Message: "Invalid checkin_booking date format"}
@@ -132,15 +131,7 @@ func BuyTicket(db *gorm.DB, secretKey []byte) echo.HandlerFunc {
 			return c.JSON(http.StatusInternalServerError, errorResponse)
 		}
 
-		if pointsEarned > 0 {
-			user.Points += pointsEarned
-
-			if err := db.Save(&user).Error; err != nil {
-				errorResponse := helper.ErrorResponse{Code: http.StatusInternalServerError, Message: "Failed to update user points"}
-				return c.JSON(http.StatusInternalServerError, errorResponse)
-			}
-		}
-
+		// Buat tiket dan simpan di database
 		ticket := model.Ticket{
 			HotelID:         hotel.ID,
 			UserID:          user.ID,
@@ -150,8 +141,10 @@ func BuyTicket(db *gorm.DB, secretKey []byte) echo.HandlerFunc {
 			InvoiceNumber:   helper.GenerateInvoiceNumber(),
 			KodeVoucher:     ticketPurchase.KodeVoucher,
 			Quantity:        ticketPurchase.Quantity,
-			CheckinBooking:  &checkinBookingTime,  // Simpan tanggal check-in dalam bentuk time.Time
-			CheckoutBooking: &checkoutBookingTime, // Simpan tanggal check-out dalam bentuk time.Time
+			CheckinBooking:  &checkinBookingTime,
+			CheckoutBooking: &checkoutBookingTime,
+			PaidStatus:      false,        // Set paid_status menjadi false saat pembelian
+			PointsEarned:    pointsEarned, // Simpan pointsEarned dalam tiket
 		}
 
 		if err := db.Create(&ticket).Error; err != nil {
@@ -159,6 +152,7 @@ func BuyTicket(db *gorm.DB, secretKey []byte) echo.HandlerFunc {
 			return c.JSON(http.StatusInternalServerError, errorResponse)
 		}
 
+		// Kirim email ke pengguna
 		emailSubject := helper.GetEmailSubject(ticket)
 		hotelName := hotel.Title
 		hotelRoom := hotel.RoomType
@@ -173,6 +167,19 @@ func BuyTicket(db *gorm.DB, secretKey []byte) echo.HandlerFunc {
 		pointMessage := "Points earned"
 		if pointsEarned == 0 && ticketPurchase.KodeVoucher != "" {
 			pointMessage = "Points not earned due to voucher"
+		}
+
+		// Setelah transaksi selesai, periksa paid_status pada tiket
+		var updatedTicket model.Ticket
+		result = db.Where("invoice_number = ?", ticket.InvoiceNumber).First(&updatedTicket)
+		if result.Error == nil && updatedTicket.PaidStatus && !user.IsAdmin {
+			// Jika paid_status berubah menjadi true dan pengguna bukan admin, tambahkan poin ke pengguna
+			user.Points += pointsEarned
+
+			if err := db.Save(&user).Error; err != nil {
+				errorResponse := helper.ErrorResponse{Code: http.StatusInternalServerError, Message: "Failed to update user points"}
+				return c.JSON(http.StatusInternalServerError, errorResponse)
+			}
 		}
 
 		responseData := map[string]interface{}{
@@ -194,6 +201,5 @@ func BuyTicket(db *gorm.DB, secretKey []byte) echo.HandlerFunc {
 		}
 
 		return c.JSON(http.StatusOK, response)
-
 	}
 }
