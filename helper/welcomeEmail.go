@@ -15,7 +15,7 @@ func SendWelcomeEmail(userEmail, name, verificationToken string) error {
 	sender := smtpUsername
 	recipient := userEmail
 	subject := "Welcome to Hotelku Booking App"
-	verificationLink := "http://localhost:8080/verify?token=" + verificationToken
+	verificationLink := "https://hotelku-miniproject-403405.uc.r.appspot.com/verify?token=" + verificationToken
 	emailBody := `
     <html>
     <head>
