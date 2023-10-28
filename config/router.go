@@ -14,6 +14,8 @@ func SetupRouter() *echo.Echo {
 	}
 	router := echo.New()
 	router.Use(middleware.Logger())
+	router.Use(middleware.CORS())
+	router.Pre(middleware.RemoveTrailingSlash())
 	routes.SetupRoutes(router, db)
 	return router
 }
