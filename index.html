@@ -78,6 +78,7 @@
                 <li class="nav-item"><a class="nav-link" href="#getUserDataById">Get User Data By ID</a></li>
                 <li class="nav-item"><a class="nav-link" href="#getAllTicketByAdmin">Get All Ticket By Admin</a></li>
                 <li class="nav-item"><a class="nav-link" href="#addedHotelByAdmin">Added Hotel By Admin</a></li>
+                <li class="nav-item"><a class="nav-link" href="#paidUpdate">Paid Status Update By Admin</a></li>
                 <li class="nav-item"><a class="nav-link" href="#getAllHotel">Get All Hotel Data</a></li>
                 <li class="nav-item"><a class="nav-link" href="#getHotelById">Get Hotel Data By ID</a></li>
                 <li class="nav-item"><a class="nav-link" href="#createPromoVoucherByAdmin">Create Promo Voucher By Admin</a></li>
@@ -91,6 +92,7 @@
                 <li class="nav-item"><a class="nav-link" href="#deleteHotelByAdmin">Delete Hotel Data By Admin</a></li>
                 <li class="nav-item"><a class="nav-link" href="#deleteUserByAdmin">Delete User Data By Admin</a></li>
                 <li class="nav-item"><a class="nav-link" href="#chatbot">Chatbot Access for User Platform</a></li>
+                <li class="nav-item"><a class="nav-link" href="#"></a></li>
             </ul>
         </nav>
         <div id="content" class="col">
@@ -109,12 +111,12 @@
                     <p><code>POST</code></p>
                     <p><strong>Request Body</strong></p>
                     <pre>
-    {
-    "username" : "string",
-    "password" : "string",
-    "email" : "string",
-    "phone_number" : "string"
-}
+  {
+        "username" : "string",
+        "password" : "string",
+        "email" : "string",
+        "phone_number" : "string"
+  }
                         </pre>
                     <p><strong>Response</strong></p>
                     <pre>
@@ -144,9 +146,9 @@
                     <p><strong>Response</strong></p>
                     <pre>
     {
-       "id": 13,
-    "message": "Login successful",
-    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJhZml0eSIsImV4cCI6MTY5NzQ2Mzk4MywiaWF0IjoxNjk3Mzc3NTgzfQ.Q3RIb0NVJ72P5wye5iPVaEsf7-BDtT-lavTdkJq60vw"
+        "id": 13,
+        "message": "Login successful",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJhZml0eSIsImV4cCI6MTY5NzQ2Mzk4MywiaWF0IjoxNjk3Mzc3NTgzfQ.Q3RIb0NVJ72P5wye5iPVaEsf7-BDtT-lavTdkJq60vw"
     }
                         </pre>
                 </div>
@@ -171,11 +173,9 @@
         "id": int,
         "username": "string",
         "email": "string",
-        "password": "$2a$10$sDNeHDHjVPV6TR56aF/oOOyRWq5.nNEwMAqlC2aFJWrN/119d6C4K",
         "phone_number": "string",
         "points": int,
-        "is_admin": bool,
-    }
+        "is_verified": bool,
     }
                         </pre>
                 </div>
@@ -294,6 +294,50 @@
                 </div>
             </div>
 
+            <div id="paidUpdate" class="card mb-4 anchor">
+                <div class="card-body">
+                    <h2>Paid Status Update by Admin</h2>
+                    <p><strong>URL</strong></p>
+                    <p><code>/admin/ticket/:invoiceId</code></p>
+                    <p><strong>Method</strong></p>
+                    <p><code>PUT - Admin dapat mengubah status pembayaran</code></p>
+                    <p><strong>Request Body</strong></p>
+                    <pre>
+    {
+        "paid_status" : bool,
+    }
+                            </pre>
+                    <p><strong>Note</strong></p>
+                    <p><code>Include authorization token in headers.</code></p>
+                    <p><strong>Response</strong></p>
+                    <pre>
+    {
+    "code": 200,
+    "error": false,
+    "message": "Paid status updated successfully",
+    "ticket": {
+        "id": int,
+        "hotel_id": int,
+        "user_id": int,
+        "night": int,
+        "kode_voucher": "string",
+        "used_points": int,
+        "use_all_points": bool,
+        "points_earned": int,
+        "total_cost": int,
+        "invoice_number": "string,
+        "quantity": int,
+        "checkin_booking": year-month-date,
+        "checkout_booking": year-month-date,
+        "created_at": time,
+        "UpdatedAt": time,
+        "paid_status": bool
+    }
+}
+                            </pre>
+                </div>
+            </div>
+
             <div id="getAllHotel" class="card mb-4 anchor">
                 <div class="card-body">
                     <h2>Get All Hotel Data</h2>
@@ -366,7 +410,6 @@
         "photo_hotel": "string - url cloud storage",
         "created_at": "time",
         "updated_at": "time"
-    }
     }
                             </pre>
                 </div>
@@ -548,10 +591,10 @@
                     <p><code>Include authorization token in headers.</code></p>
                     <p><strong>Response</strong></p>
                     <pre>
-      {
-    "error": false,
-    "message": "User's points retrieved successfully",
-    "points": int
+    }
+        "error": false,
+        "message": "User's points retrieved successfully",
+        "points": int
     }
                             </pre>
                 </div>
@@ -612,11 +655,11 @@
                     <p><strong>Request Body</strong></p>
                     <pre>
     {
-    "username" : "string",
-    "password" : "string",
-    "email" : "string",
-    "phone_number" : "string"
-}
+        "username" : "string",
+        "password" : "string",
+        "email" : "string",
+        "phone_number" : "string"
+    }
                             </pre>
                     <p><strong>Note</strong></p>
                     <p><code>Include authorization token in headers.</code></p>
@@ -649,11 +692,11 @@
                     <p><code>Include authorization token in headers.</code></p>
                     <p><strong>Response</strong></p>
                     <pre>
-      {
-        "error":   false,
-		"message": "Hotel deleted successfully"
-      }
-                            </pre>
+            {
+                  "error":   false,
+                  "message": "User deleted successfully"
+            }
+                     </pre>
                 </div>
             </div>
             <div id="deleteHotelByAdmin" class="card mb-4 anchor">
@@ -670,7 +713,7 @@
       {
             "error":   false,
             "message": "User deleted successfully"
-    }
+      }
                             </pre>
                 </div>
             </div>
@@ -683,8 +726,8 @@
                     <p><code>POST</code></p>
                     <p><strong>Request Body</strong></p>
                     <pre>
-   {
-    "message": "Saya butuh rekomendasi hotel di jakarta"
+    {
+        "message": "Saya butuh rekomendasi hotel di jakarta"
     }
                         </pre>
                     <p><strong>Response</strong></p>
