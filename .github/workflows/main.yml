@@ -31,7 +31,7 @@ jobs:
         context: .
         file: ./Dockerfile
         push: true
-        tags: ${{ secrets.DOCKERHUB_USERNAME }}/deploy-app:latest
+        tags: ${{ secrets.DOCKERHUB_USERNAME }}/miniproject-aimar-rizki:latest
 
   deploy-rest-api:
     runs-on: ubuntu-latest
