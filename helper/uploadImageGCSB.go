@@ -11,15 +11,7 @@ import (
 	"mime/multipart"
 	"os"
 	"strings"
-
-	"github.com/joho/godotenv"
 )
-
-func init() {
-	if err := godotenv.Load(); err != nil {
-		panic("Error loading .env file")
-	}
-}
 
 func decodeBase64Credential() ([]byte, error) {
 	credentialsBase64 := os.Getenv("CREDENTIALS")
