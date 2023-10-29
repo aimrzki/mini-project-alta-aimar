@@ -4,7 +4,6 @@ import (
 	"github.com/joho/godotenv" // Import godotenv
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
-	"log"
 	"myproject/model"
 	"os"
 	"strconv"
@@ -19,10 +18,7 @@ type DatabaseConfig struct {
 }
 
 func InitializeDatabase() (*gorm.DB, error) {
-	err := godotenv.Load()
-	if err != nil {
-		log.Fatalf("Error loading .env file: %v", err)
-	}
+	godotenv.Load(".env")
 
 	dbConfig := DatabaseConfig{
 		Host: os.Getenv("DB_HOST"),
