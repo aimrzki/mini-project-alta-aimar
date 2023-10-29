@@ -1,5 +1,4 @@
 runtime: go
-service: hotelku-api
 env: flex
 
 
