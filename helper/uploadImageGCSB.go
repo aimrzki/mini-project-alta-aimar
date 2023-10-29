@@ -4,17 +4,41 @@ import (
 	"bytes"
 	"cloud.google.com/go/storage"
 	"context"
+	"encoding/base64"
 	"fmt"
 	"google.golang.org/api/option"
 	"io"
 	"mime/multipart"
+	"os"
 	"strings"
+
+	"github.com/joho/godotenv"
 )
+
+func init() {
+	if err := godotenv.Load(); err != nil {
+		panic("Error loading .env file")
+	}
+}
+
+func decodeBase64Credential() ([]byte, error) {
+	credentialsBase64 := os.Getenv("CREDENTIALS")
+	credentialsBytes, err := base64.StdEncoding.DecodeString(credentialsBase64)
+	if err != nil {
+		return nil, err
+	}
+	return credentialsBytes, nil
+}
 
 func UploadImageToGCS(imageData []byte, imageName string) (string, error) {
 	ctx := context.Background()
 
-	client, err := storage.NewClient(ctx, option.WithCredentialsFile("key/credentials.json"))
+	credentialsBytes, err := decodeBase64Credential()
+	if err != nil {
+		return "", err
+	}
+
+	client, err := storage.NewClient(ctx, option.WithCredentialsJSON(credentialsBytes))
 	if err != nil {
 		return "", err
 	}
