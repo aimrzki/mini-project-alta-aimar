@@ -17,6 +17,7 @@ func decodeBase64Credential() ([]byte, error) {
 	credentialsBase64 := os.Getenv("CREDENTIALS")
 	credentialsBytes, err := base64.StdEncoding.DecodeString(credentialsBase64)
 	if err != nil {
+		fmt.Println("Error decoding base64 credential")
 		return nil, err
 	}
 	return credentialsBytes, nil
