@@ -5,8 +5,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f3fcaa9f-d181-4f34-b8aa-01dc78a1d7fc" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/cloudbuild.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/controllers/buyTicket_test.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/helper/welcomeEmail.go" beforeDir="false" afterPath="$PROJECT_DIR$/helper/welcomeEmail.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/go.mod" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/go.sum" beforeDir="false" afterPath="$PROJECT_DIR$/go.sum" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/routes/routes.go" beforeDir="false" afterPath="$PROJECT_DIR$/routes/routes.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -16,6 +21,7 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
+        <option value="Go File" />
         <option value="Go Application" />
       </list>
     </option>
@@ -43,7 +49,7 @@
     &quot;RunOnceActivity.go.modules.automatic.dependencies.download&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.go.modules.go.list.on.any.changes.was.set&quot;: &quot;true&quot;,
     &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;Update-paid-status-admin&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;all-bugs-fix&quot;,
     &quot;go.import.settings.migrated&quot;: &quot;true&quot;,
     &quot;go.sdk.automatically.set&quot;: &quot;true&quot;,
     &quot;last_opened_file_path&quot;: &quot;/Users/aimrzki&quot;,
@@ -52,7 +58,7 @@
     &quot;settings.editor.selected.configurable&quot;: &quot;preferences.externalTools&quot;
   }
 }</component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Go Build.go build myproject">
     <configuration name="go build myproject" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true" nameIsGenerated="true">
       <module name="myproject" />
       <working_directory value="$PROJECT_DIR$" />
@@ -62,9 +68,33 @@
       <filePath value="$PROJECT_DIR$/main.go" />
       <method v="2" />
     </configuration>
+    <configuration name="go test myproject/controllers" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
+      <module name="myproject" />
+      <working_directory value="$PROJECT_DIR$/controllers" />
+      <root_directory value="$PROJECT_DIR$" />
+      <kind value="PACKAGE" />
+      <package value="myproject/controllers" />
+      <directory value="$PROJECT_DIR$" />
+      <filePath value="$PROJECT_DIR$" />
+      <framework value="gotest" />
+      <method v="2" />
+    </configuration>
+    <configuration name="go test myproject/routes" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
+      <module name="myproject" />
+      <working_directory value="$PROJECT_DIR$/routes" />
+      <root_directory value="$PROJECT_DIR$" />
+      <kind value="PACKAGE" />
+      <package value="myproject/routes" />
+      <directory value="$PROJECT_DIR$" />
+      <filePath value="$PROJECT_DIR$" />
+      <framework value="gotest" />
+      <method v="2" />
+    </configuration>
     <recent_temporary>
       <list>
         <item itemvalue="Go Build.go build myproject" />
+        <item itemvalue="Go Test.go test myproject/controllers" />
+        <item itemvalue="Go Test.go test myproject/routes" />
       </list>
     </recent_temporary>
   </component>
@@ -76,6 +106,7 @@
     <settings-migrated>true</settings-migrated>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/myproject$go_test_myproject_controllers.out" NAME="go test myproject/controllers Coverage Results" MODIFIED="1698233097778" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="GoCoverage" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
+    <SUITE FILE_PATH="coverage/myproject$go_test_myproject_controllers.out" NAME="go test myproject/controllers Coverage Results" MODIFIED="1698572285996" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="GoCoverage" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
+    <SUITE FILE_PATH="coverage/myproject$go_test_myproject_routes.out" NAME="go test myproject/routes Coverage Results" MODIFIED="1698571972980" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="GoCoverage" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
   </component>
 </project>
